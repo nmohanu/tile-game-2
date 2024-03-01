@@ -23,24 +23,9 @@ bool integerInBereik (const char *variabele, int waarde,
 //*************************************************************************
 
 bool integerInBereik (int waarde, int minWaarde, int maxWaarde)
-{
-  if (waarde>=minWaarde && waarde<=maxWaarde)
-    return true;
-  else
-    return false;
-
-}  // integerInBereik
+{ return (waarde>=minWaarde && waarde<=maxWaarde); }  // integerInBereik
 
 //*************************************************************************
 
 int randomGetal (int min, int max)
-{ int bereik,
-      r;
-
-  bereik = max - min + 1;
-
-  r = ((rand())%bereik) + min;
-  return r;
-
-}  // randomGetal
-
+{ return ((rand())%(max - min + 1)) + min; }  // randomGetal
