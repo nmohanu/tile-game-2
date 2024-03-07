@@ -61,7 +61,6 @@ bool TegelSpel::leesInSpel (const char* invoernaam)
     inputFile.close(); // Sluit bestand.
     return true; // Wel gelukt.
   }
-  
 }  // leesInSpel
 
 //*************************************************************************
@@ -86,10 +85,16 @@ void TegelSpel::bouwSpel(std::ifstream& inputFile)
     }
     int counter = 0; 
     while(counter < this->aantalRijen)              // Scan k regels.
+    {
       speler1Bord.emplace_back(line[0], line[2]);   // Sla regel op voor s1.
+      counter++;
+    }
     counter = 0;
     while(counter < this->aantalRijen)
+    {
       speler1Bord.emplace_back(line[0], line[2]);   // Sla regel op voor s2.
+      counter++;
+    }
     std::getline(inputFile, line);                  // Speler aan de beurt.
     this->spelerAanBeurt = line[0] - '0';
     vulSchalen();                                   // Vul de schalen.
@@ -151,8 +156,12 @@ bool TegelSpel::eindstand ()
 
 void TegelSpel::drukAf ()
 {
-  // TODO: implementeer deze memberfunctie
-
+  std::cout << "Tegels in de pot:" << std::endl;
+  for(char c : this->pot)
+  {
+    std::cout << c;
+  }
+  std::cout << std::endl;
 }  // drukAf
 
 //*************************************************************************
