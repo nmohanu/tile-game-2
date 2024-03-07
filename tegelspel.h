@@ -10,6 +10,17 @@ using namespace std;
 
 class TegelSpel
 { public:
+
+    // Pot
+    string pot;
+    int aantalSchalen;
+    int maxTegelsOpSchaal;
+    int aantalRijen;
+    int vakjesPerRij;
+    int spelerAanBeurt;
+    vector < pair <int,int> > speler1Bord;
+    vector < pair <int,int> > speler2Bord;
+
     // Default constructor.
     TegelSpel ();
 
@@ -22,6 +33,12 @@ class TegelSpel
     // Retourneer:
     // * de inhoud van de pot (de resterende string)
     string getPot ();
+
+    // Vult de pot
+    void vulPot(string line);
+
+    // Bouw tegelspel op.
+    void bouwSpel(std::ifstream& inputFile);
 
     // Getter voor inhoud schalen
     // Retourneer:

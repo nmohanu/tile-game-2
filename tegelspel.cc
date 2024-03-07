@@ -56,14 +56,65 @@ vector< pair <int,int> > TegelSpel::getInhoudRijen (int speler)
 
 //*************************************************************************
 
+// Lees het spel bestand in.
 bool TegelSpel::leesInSpel (const char* invoernaam)
 {
-
-  // TODO: implementeer deze memberfunctie
-
-  return true;
-
+  std::ifstream inputFile(invoernaam); // Open bestand.
+  if(!inputFile.is_open())
+  {
+    std::cout << "Kon bestand niet openen" << std::endl;
+    return false; // Niet gelukt.
+  }
+  else
+  {
+    bouwSpel(inputFile); // Bouw spel op.
+    inputFile.close(); // Sluit bestand.
+    return true; // Wel gelukt.
+  }
+  
 }  // leesInSpel
+
+//*************************************************************************
+
+// Bouw het spel, regel voor regel, op.
+void TegelSpel::bouwSpel(std::ifstream& inputFile)
+{
+    std::string line;
+    std::getline(inputFile, line);            // line 1: pot
+    vulPot(line);
+    std::getline(inputFile, line);            // line 2: $ schalen, # tegels op op een schaal
+    this->aantalSchalen = line[0] - '0';      // # <= 5 dus is altijd 1 char.
+    this->maxTegelsOpSchaal = line[2] - '0';  // ^
+    std::getline(inputFile, line);            // line 2: # rijen en # vakjes per rij
+    this->aantalRijen = line[0] - '0';        // # rijen
+    if(line[1] == ' ')                        // Check of # < 10, # kan 10 zijn.
+      this->vakjesPerRij = line[2] -'0';      // # vakjes per rij
+    else
+    {
+      this->aantalRijen = 10;                 // aantalRijen = 10;
+      this->vakjesPerRij = line[3] -'0';      // vakjesPerRij staat 1 char verder.
+    }
+    int counter = 0; 
+    while(counter < this->aantalRijen)              // Scan k regels.
+      speler1Bord.emplace_back(line[0], line[2]);   // Sla regel op voor s1.
+    counter = 0;
+    while(counter < this->aantalRijen)
+      speler1Bord.emplace_back(line[0], line[2]);   // Sla regel op voor s2.
+    std::getline(inputFile, line);                  // Speler aan de beurt.
+    this->spelerAanBeurt = line[0] - '0';
+}
+
+//*************************************************************************
+
+// Vul de pot op met tegels.
+void TegelSpel::vulPot(string line)
+{
+  for(char c : line)
+  {
+    if(c == 'g' || c == 'b') // We kijken alleen naar de correcte kleuren.
+      this->pot += c;
+  }
+}
 
 //*************************************************************************
 
