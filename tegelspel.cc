@@ -9,28 +9,18 @@
 
 TegelSpel::TegelSpel ()
 {
-  // TODO: implementeer zo nodig deze constructor
 
 }  // default constructor
 
 //*************************************************************************
 
 int TegelSpel::getSchalen ()
-{
-  // TODO: implementeer deze memberfunctie
-  return 0;
-
-}  // getSchalen
+{ return this->aantalSchalen; }  // getSchalen
 
 //*************************************************************************
 
 string TegelSpel::getPot ()
-{ string retString;
-
-  // TODO: implementeer deze memberfunctie
-  return retString;
-
-}  // getPot
+{ return this->pot; }  // getPot
 
 //*************************************************************************
 
@@ -102,6 +92,37 @@ void TegelSpel::bouwSpel(std::ifstream& inputFile)
       speler1Bord.emplace_back(line[0], line[2]);   // Sla regel op voor s2.
     std::getline(inputFile, line);                  // Speler aan de beurt.
     this->spelerAanBeurt = line[0] - '0';
+    vulSchalen();                                   // Vul de schalen.
+}
+
+//*************************************************************************
+
+void TegelSpel::vulSchalen()
+{
+  int potGrootte = this->pot.length();
+  int aantalGeel = 0;
+  int aantalBlauw = 0;
+  int counter = 0;
+  while (counter < potGrootte) // Zolang er tegels in de pot zitten.
+  {
+    for(int i = 0; i < this->aantalSchalen; i++) // Voor elke schaal.
+    {
+      for(int j = 0; j < this->maxTegelsOpSchaal; j++) // Vul schaal.
+      {
+        if(pot[0] == 'g') // Check eerste tegel
+          aantalGeel++;
+        else if(pot[0] == 'b')
+          aantalBlauw++;
+        else
+          continue;                 // Kleur is ongeldig, sla over.
+
+        this->pot = pot.substr(1);  // Haal tegel uit de pot.
+        counter++;                  // Teller
+      }
+      schalen[i].first = aantalGeel; 
+      schalen[i].second = aantalBlauw;
+    }
+  }
 }
 
 //*************************************************************************
