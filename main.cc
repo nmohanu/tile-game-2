@@ -189,7 +189,9 @@ void hoofdmenu ()
               cout << "Geef de naam van het tekstbestand met het spel: ";
               cin >> invoernaam;
               if (s1 -> leesInSpel (invoernaam))
+              {
                 doeSpel (s1);
+              }
               delete s1;  // netjes opruimen
               break;
       case 2: break;

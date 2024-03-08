@@ -107,26 +107,23 @@ void TegelSpel::vulSchalen()
   int potGrootte = this->pot.length();
   int aantalGeel = 0;
   int aantalBlauw = 0;
-  int counter = 0;
-  while (counter < potGrootte) // Zolang er tegels in de pot zitten.
+  for(int i = 0; i < this->aantalSchalen; i++) // Voor elke schaal.
   {
-    for(int i = 0; i < this->aantalSchalen; i++) // Voor elke schaal.
+    for(int j = 0; j < this->maxTegelsOpSchaal; j++) // Vul schaal.
     {
-      for(int j = 0; j < this->maxTegelsOpSchaal; j++) // Vul schaal.
-      {
-        if(pot[0] == 'g') // Check eerste tegel
-          aantalGeel++;
-        else if(pot[0] == 'b')
-          aantalBlauw++;
-        else
-          continue;                 // Kleur is ongeldig, sla over.
+      if(this->pot.length() == 0)
+        return;
+      if(pot[0] == 'g') // Check eerste tegel
+        aantalGeel++;
+      else if(pot[0] == 'b')
+        aantalBlauw++;
+      else
+        continue;                 // Kleur is ongeldig, sla over.
 
-        this->pot = pot.substr(1);  // Haal tegel uit de pot.
-        counter++;                  // Teller
-      }
-      schalen[i].first = aantalGeel; 
-      schalen[i].second = aantalBlauw;
+      this->pot = pot.substr(1);  // Haal tegel uit de pot.
     }
+    schalen[i].first = aantalGeel; 
+    schalen[i].second = aantalBlauw;
   }
 }
 
