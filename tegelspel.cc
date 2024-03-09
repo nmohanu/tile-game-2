@@ -128,8 +128,8 @@ void TegelSpel::vulSchalen()
 
             this->pot = pot.substr(1); // Haal tegel uit de pot.
         }
-        schalen[i].first = aantalGeel;
-        schalen[i].second = aantalBlauw;
+        
+        schalen.emplace_back(aantalGeel, aantalBlauw); 
     }
 }
 
