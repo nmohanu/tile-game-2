@@ -142,24 +142,22 @@ void TegelSpel::vulPot(string line)
 
 //*************************************************************************
 
-// Kijk of bord vol is, neemt een bord en een index. Indien een rij vol is, wordt functie aangeroepen voor de volgende rij
-// totdat een niet-volle rij gevonden is of het einde bereikt is.
-bool TegelSpel::bordVol(vector<pair<int, int>> bord, int index)
+// Kijk of bord vol is.
+bool TegelSpel::bordVol(vector<pair<int, int>> bord)
 {
-    if (index >= bord.size()) // Einde van bord bereikt, geen niet-volle rij gevonden.
-        return true; 
-
-    if (bord[index].first != MaxPerRij && bord[index].second != MaxPerRij) // Niet-volle rij gevonden.
+    for(pair rij : bord)
+    {
+        if (rij.first != MaxPerRij && rij.second != MaxPerRij) // Niet-volle rij gevonden.
         return false; 
-
-    return bordVol(bord, index+1); // Check volgende rij.
+    }
+    return true;
 }
 
 //*************************************************************************
 
 bool TegelSpel::eindstand()
 {
-    return (bordVol(speler1Bord, 0) || bordVol(speler2Bord, 0) ||   // Vol bord gevonden.
+    return (bordVol(speler1Bord, 0) || bordVol(speler2Bord) ||   // Vol bord gevonden.
         bepaalVerschillendeZetten().size() == 0);                   // Geen mogelijke zetten.
 } // eindstand
 
