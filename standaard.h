@@ -21,4 +21,7 @@ bool integerInBereik(int waarde, int minWaarde, int maxWaarde);
 // Pre: min <= max;
 int randomGetal(int min, int max);
 
+// Geef kleinste getal terug.
+int min(int one, int two);
+
 #endif

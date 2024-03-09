@@ -33,3 +33,7 @@ int randomGetal(int min, int max)
 {
     return ((rand()) % (max - min + 1)) + min;
 } // randomGetal
+
+int min(int one, int two) {
+    return (one < two) ? one : two;
+}

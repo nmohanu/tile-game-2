@@ -227,25 +227,51 @@ void TegelSpel::drukPotAf()
 
 //*************************************************************************
 
+// Zoek voor duplicate (meerdere identieke zetten mogelijk).
+int TegelSpel::vindDubbel(Zet zet, vector<pair<int, char>> zetten)
+{
+    // Zoek duplicate.
+    for(int i = 0; i < zetten.size(); i++)
+    {
+        if(zet.schaal == zetten[i].first && zet.kleur == zetten[i].second)
+            return i;
+    }
+    return -1; // Geen duplicate gevonden.
+}
+
+//*************************************************************************
+
+void TegelSpel::verwerkMogelijkeZet(Zet zet, vector<pair<int, char>>& zetten)
+{
+    if(zet.rij == -1) // Geen rij gevonden waar zet mogelijk is.
+        return;
+    int dubbelIndex = vindDubbel(zet, zetten);
+    if(dubbelIndex == -1) // Geen dubbel gevonden.
+        zetten.emplace_back(zet.schaal, zet.kleur);
+    else // Dubbel gevonden, gebruik kleinste schaal getal.
+        zetten[dubbelIndex].first = min(zetten[dubbelIndex].first, zet.schaal);
+}
+
+//*************************************************************************
+
 vector<pair<int, char>> TegelSpel::bepaalVerschillendeZetten()
 {
     vector<pair<int, char>> zetten;
 
-    // TODO: implementeer deze memberfunctie
-
+    for(int i = 0; i < aantalSchalen; i++)
+    {
+        verwerkMogelijkeZet(*maakZet(i, 'g'), zetten);
+        verwerkMogelijkeZet(*maakZet(i, 'b'), zetten);
+    }
     return zetten;
-
 } // bepaalVerschillendeZetten
 
 //*************************************************************************
 
-bool TegelSpel::doeZet(int schaal, char kleur)
+Zet* TegelSpel::maakZet(int schaal, char kleur)
 {
     // Aantal tegels op de schaal van kleur.
     int aantal = kleur == 'g'? schalen[schaal].first : schalen[schaal].second;
-
-    if(schalen.size() < schaal || (kleur != 'g' && kleur != 'b')) // Kijk of schaal en kleur bestaan.
-        return false;
 
     Zet* zet = new Zet(); // Maak zet object.
     zet->aantal = aantal;
@@ -256,10 +282,30 @@ bool TegelSpel::doeZet(int schaal, char kleur)
     zet->rij = bepaalBesteRij(*zet);
     zet->tegelsUitPotGehaald = pot.substr(0, zet->aantal);
 
+    return zet;
+}
+
+//*************************************************************************
+
+// Verwerk zet op het bord.
+void TegelSpel::verwerkZet(Zet& zet)
+{
+    (zet.kleur == 'g' ? (*(zet.bord))[zet.rij].first : (*(zet.bord))[zet.rij].second)  += zet.aantal;
+}
+
+//*************************************************************************
+bool TegelSpel::doeZet(int schaal, char kleur)
+{
+    if(schalen.size() < schaal || (kleur != 'g' && kleur != 'b')) // Kijk of schaal en kleur bestaan.
+        return false;
+
+    Zet* zet = maakZet(schaal, kleur);
+
     if(zet->rij != -1)
     {
         // Update bord.
-        (zet->kleur == 'g' ? (*(zet->bord))[zet->rij].first : (*(zet->bord))[zet->rij].second)  += zet->aantal;
+        verwerkZet(*zet);
+
         kleur == 'g'? schalen[schaal].first = 0 : schalen[schaal].second = 0; // Haal tegels van schaal af.
         vulSchalen(); // Hervul de schalen.
 

@@ -51,6 +51,18 @@ public:
     // Wissel speler aan beurt.
     void wisselSpelerAanBeurt();
 
+    // Maak zet aan
+    Zet* maakZet(int schaal, char kleur);
+
+    // Verwerk zet op bord.
+    void verwerkZet(Zet& zet);
+
+    // Vind index van identieke mogelijke zet.
+    int vindDubbel(Zet zet, vector<pair<int, char>>);
+
+    // Voeg zet toe aan vector of fix de dubbele set.
+    void verwerkMogelijkeZet(Zet zet, vector<pair<int, char>>& zetten);
+
     //*************************************************************************
     // Default constructor.
     TegelSpel();
