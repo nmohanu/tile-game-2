@@ -22,32 +22,21 @@ int TegelSpel::getSchalen()
 //*************************************************************************
 
 string TegelSpel::getPot()
-{
-    return this->pot;
-} // getPot
+{ return this->pot; } // getPot
 
 //*************************************************************************
 
 vector<pair<int, int>> TegelSpel::getInhoudSchalen()
-{
-    vector<pair<int, int>> inhoudSchalen;
-
-    // TODO: implementeer deze memberfunctie
-
-    return inhoudSchalen;
-
-} // getInhoudSchalen
+{ return schalen; } // getInhoudSchalen
 
 //*************************************************************************
 
 vector<pair<int, int>> TegelSpel::getInhoudRijen(int speler)
 {
-    vector<pair<int, int>> inhoudRijen;
-
-    // TODO: implementeer deze memberfunctie
-
-    return inhoudRijen;
-
+    if(speler == 0)
+        return speler1Bord;
+    else
+        return speler2Bord;
 } // getInhoudRijen
 
 //*************************************************************************
