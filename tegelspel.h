@@ -1,7 +1,7 @@
 // Definitie van klasse TegelSpel
 
-#ifndef TegelSpelHVar  // voorkom dat dit bestand meerdere keren
-#define TegelSpelHVar  // ge-include wordt
+#ifndef TegelSpelHVar // voorkom dat dit bestand meerdere keren
+#define TegelSpelHVar // ge-include wordt
 
 #include <vector>
 #include <string>
@@ -9,11 +9,11 @@
 using namespace std;
 
 class TegelSpel
-{ public:
-
+{
+public:
     // Nieuwe functies (non-template):
     //*************************************************************************
-    
+
     // vul schalen
     void vulSchalen();
 
@@ -21,37 +21,35 @@ class TegelSpel
     void vulPot(string line);
 
     // Bouw tegelspel op.
-    void bouwSpel(std::ifstream& inputFile);
+    void bouwSpel(std::ifstream &inputFile);
 
     //*************************************************************************
     // Default constructor.
-    TegelSpel ();
+    TegelSpel();
 
     // Getter voor schalen
     // Retourneer:
     // * het aantal schalen van het huidige spel
-    int getSchalen ();
+    int getSchalen();
 
     // Getter voor pot
     // Retourneer:
     // * de inhoud van de pot (de resterende string)
-    string getPot ();
-
-    
+    string getPot();
 
     // Getter voor inhoud schalen
     // Retourneer:
     // * een vector met achtereenvolgens voor schaal 0, schaal 1, enzovoort,
     //   een tweetal (aantalG,aantalB): het aantal gele, respectievelijk
     //   blauwe tegels in die schaal
-    vector< pair <int,int> > getInhoudSchalen ();
+    vector<pair<int, int>> getInhoudSchalen();
 
     // Getter voor inhoud rijen van een speler
     // Retourneer:
     // * een vector met voor elke rij (in een of andere volgorde) van speler
     //   `speler' een tweetal (aantalG,aantalB): het aantal gele,
     //   respectievelijk blauwe tegels in die rij
-    vector< pair <int,int> > getInhoudRijen (int speler);
+    vector<pair<int, int>> getInhoudRijen(int speler);
 
     // Lees een spel in vanuit tekstbestand invoernaam, mogelijk al (deels)
     // gevuld met tegels.
@@ -70,7 +68,7 @@ class TegelSpel
     // Post:
     // * Als aan alle voorwaarden is voldaan, is het spel met de tegels
     //   opgeslagen in membervariabelen, en staat speler-aan-beurt goed.
-    bool leesInSpel (const char* invoernaam);
+    bool leesInSpel(const char *invoernaam);
 
     // Controleer of we een eindstand hebben bereikt, dat wil zeggen:
     // of een speler alle rijen vol heeft, of dat er geen enkele geldige zet
@@ -78,11 +76,11 @@ class TegelSpel
     // Retourneer:
     // * true, als we een eindstand hebben bereikt
     // * false, als we geen eindstand hebben bereikt
-    bool eindstand ();
+    bool eindstand();
 
     // Druk de hele stand (pot, schalen met inhoud, rijen van de spelers
     // met inhoud, speler-aan-beurt) af op het scherm.
-    void drukAf ();
+    void drukAf();
 
     // Bepaal alle verschillende, geldige zetten (schaal,kleur) in de huidige
     // stand. Twee zetten zijn verschillend als
@@ -96,7 +94,7 @@ class TegelSpel
     // Retourneer:
     // * Een vector met alle verschillende geldige zetten (schaal,kleur);
     //   de volgorde van de zetten maakt niet uit.
-    vector< pair<int,char> > bepaalVerschillendeZetten ();
+    vector<pair<int, char>> bepaalVerschillendeZetten();
 
     // Doe een zet voor de speler die aan de beurt is:
     // tegels kiezen van schaal `schaal' van kleur `kleur', en die in
@@ -118,7 +116,7 @@ class TegelSpel
     //   - de speler aan beurt is gewisseld
     //   - de zet is toegevoegd aan de lijst met gedane zetten
     // * als het geen geldige zet is, is de stand niet veranderd.
-    bool doeZet (int schaal, char kleur);
+    bool doeZet(int schaal, char kleur);
 
     // Maak de laatst gedane zet ongedaan.
     // Controleer eerst of er wel een zet is om ongedaan te maken,
@@ -133,7 +131,7 @@ class TegelSpel
     //   - uit schaal gehaalde tegels zijn terug van rij naar schaal
     //   - de zet is van de lijst met uitgevoerde zetten gehaald
     // * als returnwaarde false is, is de stand niet veranderd
-    bool unDoeZet ();
+    bool unDoeZet();
 
     // Bepaal met behulp van brute force en recursie de eindscore voor
     // de speler die in de huidige stand (= de stand van de huidige
@@ -149,7 +147,7 @@ class TegelSpel
     // * aantalStanden is gelijk aan het aantal standen dat we hebben
     //   bekeken bij het bepalen van de beste eindscore
     // * de stand in het spel is nog onveranderd
-    int besteScore (pair<int,char> &besteZet, long long &aantalStanden);
+    int besteScore(pair<int, char> &besteZet, long long &aantalStanden);
 
     // Bepaal een `goede zet' voor de speler die in de huidige stand aan
     // aan de beurt is: een zet die ertoe leidt dat hij (na deze ene zet)
@@ -159,7 +157,7 @@ class TegelSpel
     // Retourneer:
     // * de gevonden zet (rij,kolom), als het geen eindstand is
     // * een passende default waarde, als het al wel een eindstand is
-    pair<int,char> bepaalGoedeZet (int nrSimulaties);
+    pair<int, char> bepaalGoedeZet(int nrSimulaties);
 
     // Speel het spel uit vanaf de huidige stand. Laat hierbij de speler
     // die in de huidige stand aan de beurt is, steeds een `goede zet'
@@ -171,7 +169,7 @@ class TegelSpel
     // Post:
     // * de huidige stand is weer hetzelfde als aan het begin van de functie
     //   (zetten zijn dus weer ongedaan gemaakt)
-    int bepaalGoedeScore ();
+    int bepaalGoedeScore();
 
     // Doe het experiment met de tijd van besteScore:
     // * speel het spel uit vanaf de huidige stand met goedeZetten
@@ -182,20 +180,18 @@ class TegelSpel
     //   te lang duurt
     // Post:
     // * de huidige stand is weer hetzelfde als aan het begin van de functie
-    void doeExperiment ();
+    void doeExperiment();
 
-  private:
+private:
     string pot;
-    int aantalSchalen;      
+    int aantalSchalen;
     int maxTegelsOpSchaal;
     int aantalRijen;
     int vakjesPerRij;
     int spelerAanBeurt;
-    vector < pair <int,int> > speler1Bord;
-    vector < pair <int,int> > speler2Bord;
-    vector< pair <int,int> > schalen;
-
+    vector<pair<int, int>> speler1Bord;
+    vector<pair<int, int>> speler2Bord;
+    vector<pair<int, int>> schalen;
 };
 
 #endif
-
