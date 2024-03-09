@@ -415,6 +415,40 @@ int TegelSpel::besteScore(pair<int, char> &besteZet,
 } // besteScore
 
 //*************************************************************************
+// Tel volle rijen
+
+int TegelSpel::telRijen(vector<pair<int, int>> bord)
+{
+    int counter = 0;
+    for(pair rij : speler1Bord)
+    {
+        if(rij.first == MaxPerRij || rij.second == MaxPerRij)
+        {
+            counter++;
+        }
+    }
+    return counter;
+}
+
+//*************************************************************************
+// Bereken score en winnaar, int 1 is winnende speler, int 2 is score.
+
+pair<int, int> TegelSpel::berekenScore()
+{
+    pair<int, int> score;
+
+    int speler1score = telRijen(speler1Bord);
+    int speler2score = telRijen(speler2Bord);
+
+    // Bepaal winnaar.
+    speler1score > speler2score ? score.first = 0 : score.first = 1; 
+    // Bepaal score.
+    speler1score > speler2score ? score.second = speler1score - speler2score : score.second = speler2score - speler1score;
+
+    return score;
+}
+
+//*************************************************************************
 
 pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
 {

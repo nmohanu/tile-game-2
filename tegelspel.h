@@ -66,6 +66,12 @@ public:
     // Kijk of bord vol zit op recursieve wijzen (regel voor regel).
     bool bordVol(vector<pair<int, int>> bord, int index);
 
+    // Bereken score int 1 is de speler, int 2 is de score.
+    pair<int, int> berekenScore();
+
+    // Tel volle regels van bord.
+    int telRijen(vector<pair<int, int>> bord);
+
     //*************************************************************************
     // Default constructor.
     TegelSpel();
