@@ -254,7 +254,7 @@ bool TegelSpel::doeZet(int schaal, char kleur)
     zet->schaal = schaal;
     zet->bord = &((spelerAanBeurt == 0) ? speler1Bord : speler2Bord);
     zet->rij = bepaalBesteRij(*zet);
-    zet->potVoorZet = this->pot;
+    zet->tegelsUitPotGehaald = pot.substr(0, zet->aantal);
 
     if(zet->rij != -1)
     {
@@ -320,18 +320,10 @@ bool TegelSpel::unDoeZet()
     // Undo zet op bord.
     (verwijderZet->kleur == 'g' ? (*(verwijderZet->bord))[verwijderZet->rij].first : (*(verwijderZet->bord))[verwijderZet->rij].second) -= verwijderZet->aantal;
 
-    // Kijk welke tegels van de pot zijn gehaald na de zet.
-    string tegelsVanPotGehaald;
-    for(int i = 0; i < verwijderZet->aantal; i++)
-    {
-        if(verwijderZet->potVoorZet.length() >= i)
-            tegelsVanPotGehaald += verwijderZet->potVoorZet[i];
-    }
-
     // Haal de uit pot gehaald tegels van de schaal af.
-    for(int i = 0; i < tegelsVanPotGehaald.length(); i++)
+    for(int i = 0; i < laatsteZet->tegelsUitPotGehaald.length(); i++)
     {
-        if(tegelsVanPotGehaald[i] == 'g')
+        if(laatsteZet->tegelsUitPotGehaald[i] == 'g')
             schalen[verwijderZet->schaal].first--;
         else
             schalen[verwijderZet->schaal].second--;
@@ -340,7 +332,7 @@ bool TegelSpel::unDoeZet()
     (verwijderZet->kleur == 'g' ? schalen[verwijderZet->schaal].first : schalen[verwijderZet->schaal].second) += verwijderZet->aantal;
 
     // Herstel de pot.
-    pot = verwijderZet->potVoorZet;
+    pot = laatsteZet->tegelsUitPotGehaald + pot;
     laatsteZet = verwijderZet->vorige;
     delete verwijderZet;
     return true;

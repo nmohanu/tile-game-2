@@ -17,7 +17,7 @@ struct Zet
     vector<pair<int, int>>* bord;
     int rij;
     int aantal;
-    string potVoorZet;
+    string tegelsUitPotGehaald;
     Zet* vorige = nullptr;
 };
 
