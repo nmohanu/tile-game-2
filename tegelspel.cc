@@ -156,12 +156,12 @@ void TegelSpel::drukAf()
     drukPotAf();
     drukSchalenAf();
 
-    cout << "Speler 1 bord:\n";
+    cout << "Speler 0 bord:\n";
     drukBordAf(speler1Bord);
-    cout << "Speler 2 bord:\n";
+    cout << "Speler 1 bord:\n";
     drukBordAf(speler2Bord);
 
-    cout << "Speler aan zet: " << spelerAanBeurt + 1 << endl;
+    cout << "Speler aan zet: " << spelerAanBeurt << endl;
 } // drukAf
 
 //*************************************************************************
@@ -272,6 +272,7 @@ bool TegelSpel::doeZet(int schaal, char kleur)
         return false;
         delete zet;
     }
+    wisselSpelerAanBeurt();
     return true;
 } // doeZet
 
@@ -287,7 +288,7 @@ int TegelSpel::bepaalBesteRij(Zet& zet)
         if(((zet.kleur == 'g') ? (*(zet.bord))[i].second : (*(zet.bord))[i].first) == 0)
         { // Rij is geldig
             // Bereken hoeveel tegels er over zijn na plaatsen van tegels op schaal.
-            int aantalOver = MaxPerRij - (zet.kleur == 'g'? (*(zet.bord))[i].first : (*(zet.bord))[i].second) - zet.aantal;
+            int aantalOver = vakjesPerRij - (zet.kleur == 'g'? (*(zet.bord))[i].first : (*(zet.bord))[i].second) - zet.aantal;
             if(aantalOver >= 0 && (aantalOver <= besteKandidaat.second || besteKandidaat.first == -1))
             {   // Even goede rij gevonden, sla op.
                 if(aantalOver == besteKandidaat.second)
@@ -335,9 +336,15 @@ bool TegelSpel::unDoeZet()
     pot = laatsteZet->tegelsUitPotGehaald + pot;
     laatsteZet = verwijderZet->vorige;
     delete verwijderZet;
+    wisselSpelerAanBeurt();
     return true;
 
 } // unDoeZet
+
+//*************************************************************************
+// Wissel tussen speler 0 en 1.
+void TegelSpel::wisselSpelerAanBeurt() 
+{ spelerAanBeurt = !spelerAanBeurt; }
 
 //*************************************************************************
 

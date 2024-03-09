@@ -48,6 +48,9 @@ public:
     // Vind beste rij en plaats zet op bord.
     int bepaalBesteRij(Zet& zet);
 
+    // Wissel speler aan beurt.
+    void wisselSpelerAanBeurt();
+
     //*************************************************************************
     // Default constructor.
     TegelSpel();
