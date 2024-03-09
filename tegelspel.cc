@@ -249,10 +249,11 @@ int TegelSpel::vindDubbel(Zet zet, vector<pair<int, char>> zetten)
 
 void TegelSpel::verwerkMogelijkeZet(Zet zet, vector<pair<int, char>>& zetten)
 {
-    if(zet.rij == -1) // Geen rij gevonden waar zet mogelijk is.
-        return;
+    int aantalInSchaal = zet.kleur == 'g' ? schalen[zet.schaal].first : schalen[zet.schaal].second;
+    if(zet.rij == -1 || aantalInSchaal < zet.aantal) 
+        return; // Geen rij gevonden waar zet mogelijk is. Of schaal heeft niet genoeg tegels van kleur.
     int dubbelIndex = vindDubbel(zet, zetten);
-    if(dubbelIndex == -1) // Geen dubbel gevonden.
+    if(dubbelIndex == -1) // Geen dubbel gevonden. 
         zetten.emplace_back(zet.schaal, zet.kleur);
     else // Dubbel gevonden, gebruik kleinste schaal getal.
         zetten[dubbelIndex].first = min(zetten[dubbelIndex].first, zet.schaal);
@@ -266,7 +267,9 @@ vector<pair<int, char>> TegelSpel::bepaalVerschillendeZetten()
 
     for(int i = 0; i < aantalSchalen; i++) // Voor elke schaal check elke mogelijke kleur.
     {
-        verwerkMogelijkeZet(*maakZet(i, 'g'), zetten);
+        if(schalen[i].first > 0)
+            verwerkMogelijkeZet(*maakZet(i, 'g'), zetten);
+        if(schalen[i].second > 0)
         verwerkMogelijkeZet(*maakZet(i, 'b'), zetten);
     }
     return zetten;
