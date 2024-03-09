@@ -165,7 +165,7 @@ void TegelSpel::drukAf()
     drukPotAf();
     drukSchalenAf();
     drukBordenAf();
-    cout << "Speler aan zet: " << spelerAanBeurt + 1 << endl;
+    cout << "Speler aan zet: " << spelerAanBeurt << endl;
 } // drukAf
 
 //*************************************************************************
@@ -219,7 +219,7 @@ void TegelSpel::drukBordenAf()
 // Druk schalen af.
 void TegelSpel::drukSchalenAf()
 {
-    int counter = 1;
+    int counter = 0;
     for (pair pair : schalen)
     {
         cout << "Schaal " << counter << endl;
