@@ -179,8 +179,7 @@ void doeSpel(TegelSpel *s1)
         cout << "De score voor de speler die aan de beurt zou zijn is: "
              << s1->besteScore(zet, aantalStanden) << endl;
     }
-
-} // doeSpel
+} // hoofdmenu
 
 //*************************************************************************
 

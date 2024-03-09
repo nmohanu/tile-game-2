@@ -23,6 +23,15 @@ public:
     // Bouw tegelspel op.
     void bouwSpel(std::ifstream &inputFile);
 
+    // Druk pot af
+    void drukPotAf();
+
+    // Druk schalen af
+    void drukSchalenAf();
+
+    // Druk borden af
+    void drukBordenAf();
+
     //*************************************************************************
     // Default constructor.
     TegelSpel();

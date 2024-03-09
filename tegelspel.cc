@@ -55,10 +55,10 @@ vector<pair<int, int>> TegelSpel::getInhoudRijen(int speler)
 // Lees het spel bestand in.
 bool TegelSpel::leesInSpel(const char *invoernaam)
 {
-    std::ifstream inputFile(invoernaam); // Open bestand.
+    ifstream inputFile(invoernaam); // Open bestand.
     if (!inputFile.is_open())
     {
-        std::cout << "Kon bestand niet openen" << std::endl;
+        cout << "Kon bestand niet openen" << endl;
         return false; // Niet gelukt.
     }
     else
@@ -72,15 +72,15 @@ bool TegelSpel::leesInSpel(const char *invoernaam)
 //*************************************************************************
 
 // Bouw het spel, regel voor regel, op.
-void TegelSpel::bouwSpel(std::ifstream &inputFile)
+void TegelSpel::bouwSpel(ifstream &inputFile)
 {
-    std::string line;
-    std::getline(inputFile, line); // line 1: pot
+    string line;
+    getline(inputFile, line); // line 1: pot
     vulPot(line);
-    std::getline(inputFile, line);           // line 2: $ schalen, # tegels op op een schaal
+    getline(inputFile, line);                // line 2: $ schalen, # tegels op op een schaal
     this->aantalSchalen = line[0] - '0';     // # <= 5 dus is altijd 1 char.
     this->maxTegelsOpSchaal = line[2] - '0'; // ^
-    std::getline(inputFile, line);           // line 2: # rijen en # vakjes per rij
+    getline(inputFile, line);                // line 2: # rijen en # vakjes per rij
     this->aantalRijen = line[0] - '0';       // # rijen
     if (line[1] == ' ')                      // Check of # < 10, # kan 10 zijn.
         this->vakjesPerRij = line[2] - '0';  // # vakjes per rij
@@ -92,16 +92,18 @@ void TegelSpel::bouwSpel(std::ifstream &inputFile)
     int counter = 0;
     while (counter < this->aantalRijen) // Scan k regels.
     {
-        speler1Bord.emplace_back(line[0], line[2]); // Sla regel op voor s1.
+        getline(inputFile, line);
+        speler1Bord.emplace_back(line[0] - '0', line[2] - '0'); // Sla regel op voor s1.
         counter++;
     }
     counter = 0;
     while (counter < this->aantalRijen)
     {
-        speler1Bord.emplace_back(line[0], line[2]); // Sla regel op voor s2.
+        getline(inputFile, line);
+        speler2Bord.emplace_back(line[0] - '0', line[2] - '0'); // Sla regel op voor s2.
         counter++;
     }
-    std::getline(inputFile, line); // Speler aan de beurt.
+    getline(inputFile, line); // Speler aan de beurt.
     this->spelerAanBeurt = line[0] - '0';
     vulSchalen(); // Vul de schalen.
 }
@@ -128,8 +130,9 @@ void TegelSpel::vulSchalen()
 
             this->pot = pot.substr(1); // Haal tegel uit de pot.
         }
-        
-        schalen.emplace_back(aantalGeel, aantalBlauw); 
+        schalen.emplace_back(aantalGeel, aantalBlauw);
+        aantalBlauw = 0;
+        aantalGeel = 0;
     }
 }
 
@@ -156,16 +159,96 @@ bool TegelSpel::eindstand()
 } // eindstand
 
 //*************************************************************************
-
+// Druk alles af
 void TegelSpel::drukAf()
 {
-    std::cout << "Tegels in de pot:" << std::endl;
-    for (char c : this->pot)
-    {
-        std::cout << c;
-    }
-    std::cout << std::endl;
+    drukPotAf();
+    drukSchalenAf();
+    drukBordenAf();
+    cout << "Speler aan zet: " << spelerAanBeurt + 1 << endl;
 } // drukAf
+
+//*************************************************************************
+// Druk borden af.
+void TegelSpel::drukBordenAf()
+{
+    cout << "Speler 1 bord:" << endl;
+    for (pair pair : speler1Bord)
+    {
+        for (int i = 0; i < maxTegelsOpSchaal; i++) // Print gele tegels.
+        {
+            if (i < pair.first)
+            {
+                cout << "g";
+            }
+            else if (i < pair.second)
+            {
+                cout << "b";
+            }
+            else
+            {
+                cout << "_";
+            }
+        }
+        cout << endl;
+    }
+    cout << "Speler 2 bord:" << endl;
+    for (pair pair : speler2Bord)
+    {
+        for (int i = 0; i < maxTegelsOpSchaal; i++) // Print gele tegels.
+        {
+            if (i < pair.first)
+            {
+                cout << "g";
+            }
+            else if (i < pair.second)
+            {
+                cout << "b";
+            }
+            else
+            {
+                cout << "_";
+            }
+        }
+        cout << endl;
+    }
+}
+
+//*************************************************************************
+
+// Druk schalen af.
+void TegelSpel::drukSchalenAf()
+{
+    int counter = 1;
+    for (pair pair : schalen)
+    {
+        cout << "Schaal " << counter << endl;
+        for (int i = 0; i < pair.first; i++) // Print gele tegels.
+        {
+            cout << "g";
+        }
+        for (int i = 0; i < pair.second; i++) // Print blauwe tegels.
+        {
+            cout << "b";
+        }
+        cout << endl;
+        counter++;
+    }
+}
+
+//*************************************************************************
+
+// Druk de pot af.
+void TegelSpel::drukPotAf()
+{
+    cout << "Tegels in de pot:" << endl;
+    for (char c : this->pot) // Druk tegels af
+    {
+        cout << c;
+    }
+    cout << endl;
+    cout << "^" << endl; // Volgende tegel in de pot indicator
+}
 
 //*************************************************************************
 
