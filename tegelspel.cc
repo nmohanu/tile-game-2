@@ -141,9 +141,22 @@ void TegelSpel::vulPot(string line)
 
 //*************************************************************************
 
+bool TegelSpel::bordVol(vector<pair<int, int>> bord, int index)
+{
+    if (index >= bord.size()) // Einde van bord bereikt, geen niet-volle rij gevonden.
+        return true; 
+
+    if (bord[index].first != MaxPerRij && bord[index].second != MaxPerRij) // Niet-volle rij gevonden.
+        return false; 
+
+    return bordVol(bord, index+1); // Check volgende rij.
+}
+
+//*************************************************************************
+
 bool TegelSpel::eindstand()
 {
-    // TODO: implementeer deze memberfunctie
+    
 
     return false;
 
@@ -409,7 +422,12 @@ pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
 {
     pair<int, char> goedeZet;
 
-    // TODO: implementeer deze memberfunctie
+    vector < pair < int, char > > zetten = bepaalVerschillendeZetten();
+
+    for(pair zet : zetten)
+    {
+
+    }
 
     return goedeZet;
 
