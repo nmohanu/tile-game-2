@@ -63,7 +63,7 @@ public:
     // Voeg zet toe aan vector of fix de dubbele set.
     void verwerkMogelijkeZet(Zet zet, vector<pair<int, char>>& zetten);
 
-    // Kijk of bord vol zit.
+    // Kijk of bord vol zit op recursieve wijzen (regel voor regel).
     bool bordVol(vector<pair<int, int>> bord, int index);
 
     //*************************************************************************

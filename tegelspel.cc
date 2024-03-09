@@ -156,10 +156,8 @@ bool TegelSpel::bordVol(vector<pair<int, int>> bord, int index)
 
 bool TegelSpel::eindstand()
 {
-    
-
-    return false;
-
+    return (bordVol(speler1Bord, 0) || bordVol(speler2Bord, 0) ||   // Vol bord gevonden.
+        bepaalVerschillendeZetten().size() == 0);                   // Geen mogelijke zetten.
 } // eindstand
 
 //*************************************************************************
