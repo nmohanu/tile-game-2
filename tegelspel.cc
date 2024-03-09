@@ -247,40 +247,52 @@ bool TegelSpel::doeZet(int schaal, char kleur)
     if(schalen.size() < schaal || (kleur != 'g' && kleur != 'b')) // Kijk of schaal en kleur bestaan.
         return false;
 
-    // Kijk of kleur bestaat, zo ja, kijk of beurt geplaatst kan worden. Indien mogelijk, haal tegels van schaal.
-    if(plaatsZetOpBord((spelerAanBeurt == 0) ? speler1Bord : speler2Bord, kleur, aantal))
+    Zet* zet = new Zet(); // Maak zet object.
+    zet->aantal = aantal;
+    zet->kleur = kleur;
+    zet->speler = spelerAanBeurt;
+    zet->schaal = schaal;
+    zet->bord = &((spelerAanBeurt == 0) ? speler1Bord : speler2Bord);
+    zet->rij = bepaalBesteRij(*zet);
+
+    if(zet->rij != -1)
     {
+        // Update bord.
+        (zet->kleur == 'g' ? (*(zet->bord))[zet->rij].first : (*(zet->bord))[zet->rij].second)  += zet->aantal;
         kleur == 'g'? schalen[schaal].first = 0 : schalen[schaal].second = 0; // Haal tegels van schaal af.
         vulSchalen(); // Hervul de schalen.
+
+        // Update de zet stack.
+        zet->vorige = this->laatsteZet;
+        this->laatsteZet = zet;
     }
     else
+    {
         return false;
+        delete zet;
+    }
     return true;
 } // doeZet
 
 //*************************************************************************
-bool TegelSpel::plaatsZetOpBord(vector<pair<int, int>>& bord, char kleur, int aantal)
+int TegelSpel::bepaalBesteRij(Zet& zet)
 {
     // Houd beste kandidaat bij, 1 = index, 2 = aantal lege plekken over na zet.
     pair <int, int> besteKandidaat(-1, -1);
-
     // Voor het geval dat er meerdere even sterke kandidaten zijn, houd bij welke indexen.
     vector <int> kandidaten;
-    for(int i = 0; i < bord.size(); i++)
-    {
-        // Check of andere kleur niet bestaat op de rij.
-        if(((kleur == 'g') ? bord[i].second : bord[i].first) == 0)
+    for(int i = 0; i < zet.bord->size(); i++)
+    {   // Check of andere kleur niet bestaat op de rij.
+        if(((zet.kleur == 'g') ? (*(zet.bord))[i].second : (*(zet.bord))[i].first == 0) == 0)
         { // Rij is geldig
             // Bereken hoeveel tegels er over zijn na plaatsen van tegels op schaal.
-            int aantalOver = maxTegelsOpSchaal - (kleur == 'g'? bord[i].first : bord[i].second) - aantal;
+            int aantalOver = maxTegelsOpSchaal - (zet.kleur == 'g'? (*(zet.bord))[i].first : (*(zet.bord))[i].second) - zet.aantal;
             if(aantalOver >= 0 && (aantalOver <= besteKandidaat.second || besteKandidaat.first == -1))
-            {
-                // Even goede rij gevonden, sla op.
+            {   // Even goede rij gevonden, sla op.
                 if(aantalOver == besteKandidaat.second)
                     kandidaten.emplace_back(i);
                 else
-                {
-                    // Nieuwe beste rij gevonden.
+                {   // Nieuwe beste rij gevonden.
                     besteKandidaat.first = i;
                     besteKandidaat.second = aantalOver;
                     kandidaten.clear(); // Reset de lijst van kindidaten.
@@ -288,26 +300,19 @@ bool TegelSpel::plaatsZetOpBord(vector<pair<int, int>>& bord, char kleur, int aa
             }
         }
     }
-
     // Kijk of er een kandidaat is en verwerk de zet.
     if(besteKandidaat.first == -1 && kandidaten.size() == 0) // Geen mogelijke rij gevonden.
-        return false;
+        return -1;
     else if(kandidaten.size() > 0) // Meerdere rijen zijn even goed, kies willekeurig.
-    {
-        int index = randomGetal(0, kandidaten.size()-1);
-        (kleur == 'g') ? bord[index].first : bord[index].second += aantal;
-    }
+        return randomGetal(0, kandidaten.size()-1); 
     else // Er is 1 beste rij gevonden.
-    {
-        ((kleur == 'g') ? bord[besteKandidaat.first].first : bord[besteKandidaat.first].second) += aantal;
-    }
-    return true;
+        return besteKandidaat.first;
 }
 //*************************************************************************
 
 bool TegelSpel::unDoeZet()
 {
-    // TODO: implementeer deze memberfunctie
+    
 
     return true;
 

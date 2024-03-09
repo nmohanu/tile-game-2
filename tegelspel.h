@@ -6,7 +6,19 @@
 #include <vector>
 #include <string>
 #include "constantes.h"
+#include <stack>
 using namespace std;
+
+struct Zet
+{
+    int speler;
+    char kleur;
+    int schaal;
+    vector<pair<int, int>>* bord;
+    int rij;
+    int aantal;
+    Zet* vorige = nullptr;
+};
 
 class TegelSpel
 {
@@ -33,7 +45,7 @@ public:
     void drukBordAf(vector<pair<int, int>>& bord);
 
     // Vind beste rij en plaats zet op bord.
-    bool plaatsZetOpBord(vector<pair<int, int>>& bord, char kleur, int aantal);
+    int bepaalBesteRij(Zet& zet);
 
     //*************************************************************************
     // Default constructor.
@@ -204,6 +216,7 @@ private:
     vector<pair<int, int>> speler1Bord;
     vector<pair<int, int>> speler2Bord;
     vector<pair<int, int>> schalen;
+    Zet* laatsteZet = nullptr;
 };
 
 #endif
