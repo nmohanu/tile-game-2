@@ -153,36 +153,20 @@ void TegelSpel::drukAf()
 {
     drukPotAf();
     drukSchalenAf();
-    drukBordenAf();
-    cout << "Speler aan zet: " << spelerAanBeurt << endl;
+
+    cout << "Speler 1 bord:\n";
+    drukBordAf(speler1Bord);
+    cout << "Speler 2 bord:\n";
+    drukBordAf(speler2Bord);
+
+    cout << "Speler aan zet: " << spelerAanBeurt + 1 << endl;
 } // drukAf
 
 //*************************************************************************
 // Druk borden af.
-void TegelSpel::drukBordenAf()
+void TegelSpel::drukBordAf(vector<pair<int, int>>& bord)
 {
-    cout << "Speler 1 bord:" << endl;
-    for (pair pair : speler1Bord)
-    {
-        for (int i = 0; i < maxTegelsOpSchaal; i++) // Print gele tegels.
-        {
-            if (i < pair.first)
-            {
-                cout << "g";
-            }
-            else if (i < pair.second)
-            {
-                cout << "b";
-            }
-            else
-            {
-                cout << "_";
-            }
-        }
-        cout << endl;
-    }
-    cout << "Speler 2 bord:" << endl;
-    for (pair pair : speler2Bord)
+    for (pair pair : bord)
     {
         for (int i = 0; i < maxTegelsOpSchaal; i++) // Print gele tegels.
         {

@@ -29,8 +29,8 @@ public:
     // Druk schalen af
     void drukSchalenAf();
 
-    // Druk borden af
-    void drukBordenAf();
+    // Druk bord af
+    void drukBordAf(vector<pair<int, int>>& bord);
 
     //*************************************************************************
     // Default constructor.
