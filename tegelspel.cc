@@ -287,7 +287,7 @@ int TegelSpel::bepaalBesteRij(Zet& zet)
         if(((zet.kleur == 'g') ? (*(zet.bord))[i].second : (*(zet.bord))[i].first) == 0)
         { // Rij is geldig
             // Bereken hoeveel tegels er over zijn na plaatsen van tegels op schaal.
-            int aantalOver = maxTegelsOpSchaal - (zet.kleur == 'g'? (*(zet.bord))[i].first : (*(zet.bord))[i].second) - zet.aantal;
+            int aantalOver = MaxPerRij - (zet.kleur == 'g'? (*(zet.bord))[i].first : (*(zet.bord))[i].second) - zet.aantal;
             if(aantalOver >= 0 && (aantalOver <= besteKandidaat.second || besteKandidaat.first == -1))
             {   // Even goede rij gevonden, sla op.
                 if(aantalOver == besteKandidaat.second)
