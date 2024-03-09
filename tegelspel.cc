@@ -101,20 +101,21 @@ void TegelSpel::bouwSpel(ifstream &inputFile)
 }
 
 //*************************************************************************
-
+// Vul de schalen met tegels, voor zo ver mogelijk.
 void TegelSpel::vulSchalen()
 {
-    int potGrootte = this->pot.length();
+    // Tel aantal per kleur.
     int aantalGeel = 0;
     int aantalBlauw = 0;
 
     for (int i = 0; i < this->aantalSchalen; i++) // Voor elke schaal.
     {
+        // Plek over in schaal.
         int plekOver = maxTegelsOpSchaal - schalen[i].first - schalen[i].second;
 
-        for (int j = 0; j < plekOver; j++)
+        for (int j = 0; j < plekOver; j++) // Vul de plekjes over.
         {
-            if (this->pot.length() == 0)
+            if (this->pot.length() == 0) // Pot is leeg.
                 return;
 
             if (pot[0] == 'g')
@@ -122,7 +123,7 @@ void TegelSpel::vulSchalen()
             else if (pot[0] == 'b')
                 schalen[i].second++;
 
-            this->pot = pot.substr(1);
+            this->pot = pot.substr(1); // Verwijder eerste tegel in pot.
         }
     }
 }
@@ -141,6 +142,8 @@ void TegelSpel::vulPot(string line)
 
 //*************************************************************************
 
+// Kijk of bord vol is, neemt een bord en een index. Indien een rij vol is, wordt functie aangeroepen voor de volgende rij
+// totdat een niet-volle rij gevonden is of het einde bereikt is.
 bool TegelSpel::bordVol(vector<pair<int, int>> bord, int index)
 {
     if (index >= bord.size()) // Einde van bord bereikt, geen niet-volle rij gevonden.
@@ -164,8 +167,8 @@ bool TegelSpel::eindstand()
 // Druk alles af
 void TegelSpel::drukAf()
 {
-    drukPotAf();
-    drukSchalenAf();
+    drukPotAf(); // Print pot.
+    drukSchalenAf(); // Print schalen.
 
     cout << "Speler 0 bord:\n";
     drukBordAf(speler1Bord);
@@ -179,22 +182,16 @@ void TegelSpel::drukAf()
 // Druk borden af.
 void TegelSpel::drukBordAf(vector<pair<int, int>>& bord)
 {
-    for (pair pair : bord)
+    for (pair pair : bord) // Voor elke rij in bord.
     {
-        for (int i = 0; i < vakjesPerRij; i++) // Print gele tegels.
+        for (int i = 0; i < vakjesPerRij; i++)  // Loop rij af.
         {
-            if (i < pair.first)
-            {
+            if (i < pair.first) // Print gele tegels
                 cout << "g";
-            }
-            else if (i < pair.second)
-            {
+            else if (i < pair.second) // Print blauwe tegels.
                 cout << "b";
-            }
             else
-            {
-                cout << "_";
-            }
+                cout << "_"; // leeg.
         }
         cout << endl;
     }
@@ -206,7 +203,7 @@ void TegelSpel::drukBordAf(vector<pair<int, int>>& bord)
 void TegelSpel::drukSchalenAf()
 {
     int counter = 0;
-    for (pair pair : schalen)
+    for (pair pair : schalen) // Voor elke schaal.
     {
         cout << "Schaal " << counter << endl;
         for (int i = 0; i < pair.first; i++) // Print gele tegels.
@@ -245,7 +242,7 @@ int TegelSpel::vindDubbel(Zet zet, vector<pair<int, char>> zetten)
     for(int i = 0; i < zetten.size(); i++)
     {
         if(zet.schaal == zetten[i].first && zet.kleur == zetten[i].second)
-            return i;
+            return i; // Dubbel gevonden, geef index terug.
     }
     return -1; // Geen duplicate gevonden.
 }
@@ -269,7 +266,7 @@ vector<pair<int, char>> TegelSpel::bepaalVerschillendeZetten()
 {
     vector<pair<int, char>> zetten;
 
-    for(int i = 0; i < aantalSchalen; i++)
+    for(int i = 0; i < aantalSchalen; i++) // Voor elke schaal check elke mogelijke kleur.
     {
         verwerkMogelijkeZet(*maakZet(i, 'g'), zetten);
         verwerkMogelijkeZet(*maakZet(i, 'b'), zetten);
@@ -285,6 +282,8 @@ Zet* TegelSpel::maakZet(int schaal, char kleur)
     int aantal = kleur == 'g'? schalen[schaal].first : schalen[schaal].second;
 
     Zet* zet = new Zet(); // Maak zet object.
+
+    // Attributen.
     zet->aantal = aantal;
     zet->kleur = kleur;
     zet->speler = spelerAanBeurt;
@@ -305,14 +304,16 @@ void TegelSpel::verwerkZet(Zet& zet)
 }
 
 //*************************************************************************
+// Doe de zet.
 bool TegelSpel::doeZet(int schaal, char kleur)
 {
     if(schalen.size() < schaal || (kleur != 'g' && kleur != 'b')) // Kijk of schaal en kleur bestaan.
         return false;
 
+    // Maak zet instantie.
     Zet* zet = maakZet(schaal, kleur);
 
-    if(zet->rij != -1)
+    if(zet->rij != -1) // Kijk of er een mogelijke rij gevonden is.
     {
         // Update bord.
         verwerkZet(*zet);
@@ -423,9 +424,7 @@ int TegelSpel::telRijen(vector<pair<int, int>> bord)
     for(pair rij : speler1Bord)
     {
         if(rij.first == MaxPerRij || rij.second == MaxPerRij)
-        {
             counter++;
-        }
     }
     return counter;
 }
