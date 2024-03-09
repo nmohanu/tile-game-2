@@ -241,12 +241,68 @@ vector<pair<int, char>> TegelSpel::bepaalVerschillendeZetten()
 
 bool TegelSpel::doeZet(int schaal, char kleur)
 {
-    // TODO: implementeer deze memberfunctie
+    // Aantal tegels op de schaal van kleur.
+    int aantal = kleur == 'g'? schalen[schaal].first : schalen[schaal].second;
 
+    if(schalen.size() < schaal || (kleur != 'g' && kleur != 'b')) // Kijk of schaal en kleur bestaan.
+        return false;
+
+    // Kijk of kleur bestaat, zo ja, kijk of beurt geplaatst kan worden. Indien mogelijk, haal tegels van schaal.
+    if(plaatsZetOpBord((spelerAanBeurt == 0) ? speler1Bord : speler2Bord, kleur, aantal))
+    {
+        kleur == 'g'? schalen[schaal].first = 0 : schalen[schaal].second = 0; // Haal tegels van schaal af.
+        vulSchalen(); // Hervul de schalen.
+    }
+    else
+        return false;
     return true;
-
 } // doeZet
 
+//*************************************************************************
+bool TegelSpel::plaatsZetOpBord(vector<pair<int, int>>& bord, char kleur, int aantal)
+{
+    // Houd beste kandidaat bij, 1 = index, 2 = aantal lege plekken over na zet.
+    pair <int, int> besteKandidaat(-1, -1);
+
+    // Voor het geval dat er meerdere even sterke kandidaten zijn, houd bij welke indexen.
+    vector <int> kandidaten;
+    for(int i = 0; i < bord.size(); i++)
+    {
+        // Check of andere kleur niet bestaat op de rij.
+        if(((kleur == 'g') ? bord[i].second : bord[i].first) == 0)
+        { // Rij is geldig
+            // Bereken hoeveel tegels er over zijn na plaatsen van tegels op schaal.
+            int aantalOver = maxTegelsOpSchaal - (kleur == 'g'? bord[i].first : bord[i].second) - aantal;
+            if(aantalOver >= 0 && (aantalOver <= besteKandidaat.second || besteKandidaat.first == -1))
+            {
+                // Even goede rij gevonden, sla op.
+                if(aantalOver == besteKandidaat.second)
+                    kandidaten.emplace_back(i);
+                else
+                {
+                    // Nieuwe beste rij gevonden.
+                    besteKandidaat.first = i;
+                    besteKandidaat.second = aantalOver;
+                    kandidaten.clear(); // Reset de lijst van kindidaten.
+                }
+            }
+        }
+    }
+
+    // Kijk of er een kandidaat is en verwerk de zet.
+    if(besteKandidaat.first == -1 && kandidaten.size() == 0) // Geen mogelijke rij gevonden.
+        return false;
+    else if(kandidaten.size() > 0) // Meerdere rijen zijn even goed, kies willekeurig.
+    {
+        int index = randomGetal(0, kandidaten.size()-1);
+        (kleur == 'g') ? bord[index].first : bord[index].second += aantal;
+    }
+    else // Er is 1 beste rij gevonden.
+    {
+        ((kleur == 'g') ? bord[besteKandidaat.first].first : bord[besteKandidaat.first].second) += aantal;
+    }
+    return true;
+}
 //*************************************************************************
 
 bool TegelSpel::unDoeZet()

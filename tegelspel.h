@@ -14,23 +14,26 @@ public:
     // Nieuwe functies (non-template):
     //*************************************************************************
 
-    // vul schalen
+    // vul schalen.
     void vulSchalen();
 
-    // Vult de pot
+    // Vult de pot.
     void vulPot(string line);
 
     // Bouw tegelspel op.
     void bouwSpel(std::ifstream &inputFile);
 
-    // Druk pot af
+    // Druk pot af.
     void drukPotAf();
 
-    // Druk schalen af
+    // Druk schalen af.
     void drukSchalenAf();
 
-    // Druk bord af
+    // Druk bord af.
     void drukBordAf(vector<pair<int, int>>& bord);
+
+    // Vind beste rij en plaats zet op bord.
+    bool plaatsZetOpBord(vector<pair<int, int>>& bord, char kleur, int aantal);
 
     //*************************************************************************
     // Default constructor.
