@@ -66,9 +66,13 @@ void TegelSpel::bouwSpel(ifstream &inputFile)
     string line;
     getline(inputFile, line); // line 1: pot
     vulPot(line);
+
     getline(inputFile, line);                // line 2: $ schalen, # tegels op op een schaal
     this->aantalSchalen = line[0] - '0';     // # <= 5 dus is altijd 1 char.
     this->maxTegelsOpSchaal = line[2] - '0'; // ^
+    schalen.resize(this->aantalSchalen);
+    vulSchalen(); // Vul de schalen.
+
     getline(inputFile, line);                // line 2: # rijen en # vakjes per rij
     this->aantalRijen = line[0] - '0';       // # rijen
     if (line[1] == ' ')                      // Check of # < 10, # kan 10 zijn.
@@ -94,7 +98,6 @@ void TegelSpel::bouwSpel(ifstream &inputFile)
     }
     getline(inputFile, line); // Speler aan de beurt.
     this->spelerAanBeurt = line[0] - '0';
-    vulSchalen(); // Vul de schalen.
 }
 
 //*************************************************************************
@@ -104,24 +107,23 @@ void TegelSpel::vulSchalen()
     int potGrootte = this->pot.length();
     int aantalGeel = 0;
     int aantalBlauw = 0;
+
     for (int i = 0; i < this->aantalSchalen; i++) // Voor elke schaal.
     {
-        for (int j = 0; j < this->maxTegelsOpSchaal; j++) // Vul schaal.
+        int plekOver = maxTegelsOpSchaal - schalen[i].first - schalen[i].second;
+
+        for (int j = 0; j < plekOver; j++)
         {
             if (this->pot.length() == 0)
                 return;
-            if (pot[0] == 'g') // Check eerste tegel
-                aantalGeel++;
-            else if (pot[0] == 'b')
-                aantalBlauw++;
-            else
-                continue; // Kleur is ongeldig, sla over.
 
-            this->pot = pot.substr(1); // Haal tegel uit de pot.
+            if (pot[0] == 'g')
+                schalen[i].first++;
+            else if (pot[0] == 'b')
+                schalen[i].second++;
+
+            this->pot = pot.substr(1);
         }
-        schalen.emplace_back(aantalGeel, aantalBlauw);
-        aantalBlauw = 0;
-        aantalGeel = 0;
     }
 }
 
@@ -168,7 +170,7 @@ void TegelSpel::drukBordAf(vector<pair<int, int>>& bord)
 {
     for (pair pair : bord)
     {
-        for (int i = 0; i < maxTegelsOpSchaal; i++) // Print gele tegels.
+        for (int i = 0; i < vakjesPerRij; i++) // Print gele tegels.
         {
             if (i < pair.first)
             {
