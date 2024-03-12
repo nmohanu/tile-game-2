@@ -422,9 +422,9 @@ int TegelSpel::besteScore(pair<int, char> &besteZet,
 int TegelSpel::telRijen(vector<pair<int, int>> bord)
 {
     int counter = 0;
-    for(pair rij : speler1Bord)
+    for(pair rij : bord)
     {
-        if(rij.first == MaxPerRij || rij.second == MaxPerRij)
+        if(rij.first == vakjesPerRij || rij.second == vakjesPerRij)
             counter++;
     }
     return counter;
@@ -447,18 +447,54 @@ pair<int, int> TegelSpel::berekenScore()
 
     return score;
 }
+//*************************************************************************
+
+int TegelSpel::berekenGemiddeldeScore(int speler)
+{
+    if(eindstand())
+    {
+        int score = (speler == 0) ? this->telRijen(speler1Bord) : this->telRijen(speler2Bord);
+        return score;
+    }
+    else
+    {
+        vector < pair < int, char > > zetten = this->bepaalVerschillendeZetten();
+        pair < int, char > randomZet = zetten[randomGetal(0, zetten.size()-1)];
+        this->doeZet(randomZet.first, randomZet.second);
+        return this->berekenGemiddeldeScore(speler);
+    }
+}
 
 //*************************************************************************
 
 pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
 {
+    if(eindstand())
+        return pair(-1, -1);
+
     pair<int, char> goedeZet;
 
-    vector < pair < int, char > > zetten = bepaalVerschillendeZetten();
+    // Bepaal mogelijke zetten in huidige positie.
+    vector < pair < int, char > > zetten = bepaalVerschillendeZetten(); 
 
-    for(pair zet : zetten)
+    int hoogsteScore = 0;
+
+    for(pair zet : zetten) // Voor elke mogelijke zet.
     {
-
+        int score = 0;
+        for(int i = 0; i < nrSimulaties; i++) // Speel n keer willekeurig het spel.
+        {
+            TegelSpel kopie = *this;
+            kopie.doeZet(zet.first, zet.second);
+            score += kopie.berekenGemiddeldeScore(spelerAanBeurt);
+            
+        }
+        score /= nrSimulaties;
+            if(score > hoogsteScore)
+            {
+                hoogsteScore = score;
+                goedeZet = zet;
+            }
     }
 
     return goedeZet;

@@ -26,6 +26,8 @@ class TegelSpel
 public:
     // Nieuwe functies (non-template):
     //*************************************************************************
+    // Bereken gemiddelde score in positie.
+    int berekenGemiddeldeScore(int speler);
 
     // vul schalen.
     void vulSchalen();
