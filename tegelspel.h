@@ -244,6 +244,8 @@ private:
     vector<pair<int, int>> speler2Bord;
     vector<pair<int, int>> schalen;
     Zet* laatsteZet = nullptr;
+
+    int besteScoreStap(pair<int, char> &besteZet, long long &aantalStanden);
 };
 
 #endif
