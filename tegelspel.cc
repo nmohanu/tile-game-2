@@ -447,6 +447,7 @@ pair<int, int> TegelSpel::berekenScore()
 
     return score;
 }
+
 //*************************************************************************
 // bereken recursief de score van een speler bij willekeurige zetten.
 int TegelSpel::speelRandom(int speler)
@@ -505,9 +506,19 @@ pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
 
 int TegelSpel::bepaalGoedeScore()
 {
-    // TODO: implementeer deze memberfunctie
+    TegelSpel kopie = *this; // Maak kopie van huidige situatie.
+    while(!kopie.eindstand())
+    {
+        pair<int, char> zet = bepaalGoedeZet(NrSimulaties); // is nooit default waarde door while check
+        kopie.doeZet(zet.first, zet.second);                // doe zet.
+        if(kopie.eindstand())                               // Check voor eindstand.
+            break;
+        kopie.wisselSpelerAanBeurt();                       // Wissel speler aan  beurt.
+        
+        // TODO: Doe beste zet voor volgende speler.
+    }
 
-    return 0;
+    return kopie.telRijen(spelerAanBeurt == 0 ? speler1Bord : speler2Bord); // Bereken score.
 
 } // bepaalGoedeScore
 
