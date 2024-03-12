@@ -448,8 +448,8 @@ pair<int, int> TegelSpel::berekenScore()
     return score;
 }
 //*************************************************************************
-
-int TegelSpel::berekenGemiddeldeScore(int speler)
+// bereken recursief de score van een speler bij willekeurige zetten.
+int TegelSpel::speelRandom(int speler)
 {
     if(eindstand())
     {
@@ -461,7 +461,7 @@ int TegelSpel::berekenGemiddeldeScore(int speler)
         vector < pair < int, char > > zetten = this->bepaalVerschillendeZetten();
         pair < int, char > randomZet = zetten[randomGetal(0, zetten.size()-1)];
         this->doeZet(randomZet.first, randomZet.second);
-        return this->berekenGemiddeldeScore(speler);
+        return this->speelRandom(speler);
     }
 }
 
@@ -477,16 +477,16 @@ pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
     // Bepaal mogelijke zetten in huidige positie.
     vector < pair < int, char > > zetten = bepaalVerschillendeZetten(); 
 
-    int hoogsteScore = 0;
+    float hoogsteScore = 0;
 
     for(pair zet : zetten) // Voor elke mogelijke zet.
     {
-        int score = 0;
+        float score = 0;
         for(int i = 0; i < nrSimulaties; i++) // Speel n keer willekeurig het spel.
         {
             TegelSpel kopie = *this;
             kopie.doeZet(zet.first, zet.second);
-            score += kopie.berekenGemiddeldeScore(spelerAanBeurt);
+            score += kopie.speelRandom(spelerAanBeurt);
             
         }
         score /= nrSimulaties;

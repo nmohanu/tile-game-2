@@ -27,7 +27,7 @@ public:
     // Nieuwe functies (non-template):
     //*************************************************************************
     // Bereken gemiddelde score in positie.
-    int berekenGemiddeldeScore(int speler);
+    int speelRandom(int speler);
 
     // vul schalen.
     void vulSchalen();
