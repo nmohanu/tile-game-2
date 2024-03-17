@@ -546,17 +546,26 @@ int TegelSpel::bepaalGoedeScore()
     TegelSpel kopie = *this; // Maak kopie van huidige situatie.
     while(!kopie.eindstand())
     {
-        pair<int, char> zet = bepaalGoedeZet(NrSimulaties); // is nooit default waarde door while check
-        kopie.doeZet(zet.first, zet.second);                // doe zet.
-        if(kopie.eindstand())                               // Check voor eindstand.
-            break;
+        if (kopie.spelerAanBeurt == spelerAanBeurt)
+        {
+            pair<int, char> zet = kopie.bepaalGoedeZet(NrSimulaties); // is nooit default waarde door while check
+            kopie.doeZet(zet.first, zet.second);                // doe zet.
+        }
+        else
+        {
+            pair<int, char> zet;
+            long long pd;
+
+            besteScore(zet, pd);
+
+            kopie.doeZet(zet.first, zet.second);                // doe zet.
+        }
+
+
         kopie.wisselSpelerAanBeurt();                       // Wissel speler aan  beurt.
-        
-        // TODO: Doe beste zet voor volgende speler.
     }
 
     return kopie.telRijen(spelerAanBeurt == 0 ? speler1Bord : speler2Bord); // Bereken score.
-
 } // bepaalGoedeScore
 
 //*************************************************************************
