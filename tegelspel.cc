@@ -536,7 +536,6 @@ pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
     }
 
     return goedeZet;
-
 } // bepaalGoedeZet
 
 //*************************************************************************

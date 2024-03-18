@@ -117,47 +117,35 @@ void doeSpel(TegelSpel *s1)
         switch (keuze)
         {
         case 1:
-            cout << endl;
             zetten = s1->bepaalVerschillendeZetten();
             aantalZetten = zetten.size();
-            cout << "Mogelijke zetten:";
+            cout << endl << "Mogelijke zetten:";
             for (int i = 0; i < aantalZetten; i++)
-                cout << " ("
-                     << zetten[i].first << "," << zetten[i].second << ")";
+                cout << " (" << zetten[i].first << "," << zetten[i].second << ")";
             cout << endl;
             break;
         case 2:
-            cout << endl;
-            cout << "Geef het nummer van de schaal (0.." << schalen - 1 << "): ";
+            cout << endl << "Geef het nummer van de schaal (0.." << schalen - 1 << "): ";
             cin >> schaal;
             cout << "Geef de kleur van de tegels (g,b): ";
             cin >> kleur;
             if (!(s1->doeZet(schaal, kleur)))
-            {
-                cout << endl;
-                cout << "Er is geen zet gedaan." << endl;
-            }
+                cout << endl << "Er is geen zet gedaan." << endl;
             break;
         case 3:
             if (!(s1->unDoeZet()))
-            {
-                cout << endl;
-                cout << "Er is geen zet ongedaan gemaakt." << endl;
-            }
+                cout << endl << "Er is geen zet ongedaan gemaakt." << endl;
             break;
         case 4:
             roepBesteScoreAan(s1);
             break;
         case 5:
             zet = s1->bepaalGoedeZet(NrSimulaties);
-            cout << endl;
-            cout << "Een goede zet is: (" << zet.first << ","
-                 << zet.second << ")" << endl;
+            cout << endl << "Een goede zet is: (" << zet.first << "," << zet.second << ")" << endl;
             break;
         case 6:
             score = s1->bepaalGoedeScore();
-            cout << endl;
-            cout << "Score goed tegen best is: " << score << endl;
+            cout << endl << "Score goed tegen best is: " << score << endl;
             break;
         case 7:
             s1->doeExperiment();
@@ -165,18 +153,14 @@ void doeSpel(TegelSpel *s1)
         case 8:
             break;
         default:
-            cout << endl;
-            cout << "Voer een goede keuze in!" << endl;
+            cout << endl << "Voer een goede keuze in!" << endl;
         } // switch
-
     } // while
 
     if (s1->eindstand())
     {
         s1->drukAf();
-        cout << endl;
-        cout << "De huidige stand is een eindstand.\n";
-        cout << "De score voor de speler die aan de beurt zou zijn is: "
+        cout << endl << "De huidige stand is een eindstand.\nDe score voor de speler die aan de beurt zou zijn is: "
              << s1->besteScore(zet, aantalStanden) << endl;
     }
 } // hoofdmenu
@@ -220,7 +204,6 @@ void hoofdmenu()
         }
 
     } while (keuze != 2);
-
 } // hoofdmenu
 
 //*************************************************************************
