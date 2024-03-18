@@ -311,11 +311,15 @@ bool TegelSpel::doeZet(int schaal, char kleur)
     if(schalen.size() < schaal || (kleur != 'g' && kleur != 'b')) // Kijk of schaal en kleur bestaan.
         return false;
 
+    if((kleur == 'g'? schalen[schaal].first : schalen[schaal].second) < 1) // Kijk of tegel op schaal ligt.
+        return false;
+
     // Maak zet instantie.
     Zet* zet = maakZet(schaal, kleur);
 
     if(zet->rij != -1) // Kijk of er een mogelijke rij gevonden is.
     {
+
         // Update bord.
         verwerkZet(*zet);
 

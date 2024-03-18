@@ -135,6 +135,7 @@ void doeSpel(TegelSpel *s1)
             if (!(s1->doeZet(schaal, kleur)))
             {
                 cout << endl;
+                cout << "Ongeldige invoer!" << endl;
                 cout << "Er is geen zet gedaan." << endl;
             }
             break;
