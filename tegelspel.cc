@@ -556,7 +556,7 @@ int TegelSpel::bepaalGoedeScore()
             pair<int, char> zet;
             long long pd;
 
-            besteScore(zet, pd);
+            kopie.besteScore(zet, pd);
 
             kopie.doeZet(zet.first, zet.second);                // doe zet.
         }
