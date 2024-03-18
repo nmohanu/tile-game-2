@@ -569,6 +569,27 @@ int TegelSpel::bepaalGoedeScore()
 
 void TegelSpel::doeExperiment()
 {
-    // TODO: implementeer deze memberfunctie
+    // Bereik eindstand.
+    long long zetten = 0;
 
+    while (!eindstand())
+    {
+        pair<int, char> zet = bepaalGoedeZet(NrSimulaties); // is nooit default waarde door while check
+        doeZet(zet.first, zet.second);
+        
+        zetten++;
+    }
+
+    // Eindstand bereikt. Werk achteruit.
+    for (; zetten > 0; zetten--)
+    {
+        unDoeZet();
+
+        pair<int, char> zet;
+        long long aantal;
+
+        besteScore(zet, aantal);
+
+        cout << aantal << '\n';
+    }
 } // doeExperiment
