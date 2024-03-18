@@ -78,6 +78,8 @@ public:
     // Default constructor.
     TegelSpel();
 
+    ~TegelSpel();
+
     // Getter voor schalen
     // Retourneer:
     // * het aantal schalen van het huidige spel

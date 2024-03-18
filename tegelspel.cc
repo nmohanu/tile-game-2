@@ -12,6 +12,19 @@ TegelSpel::TegelSpel()
 
 } // default constructor
 
+TegelSpel::~TegelSpel()
+{
+    // Verwijder alle zetten.
+    Zet* current = laatsteZet;
+
+    while (current != nullptr)
+    {
+        Zet* tmp = current;
+        current = current->vorige;
+        delete tmp;
+    }
+}
+
 //*************************************************************************
 
 int TegelSpel::getSchalen()
