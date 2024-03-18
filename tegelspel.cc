@@ -560,9 +560,6 @@ int TegelSpel::bepaalGoedeScore()
 
             kopie.doeZet(zet.first, zet.second);                // doe zet.
         }
-
-
-        kopie.wisselSpelerAanBeurt();                       // Wissel speler aan  beurt.
     }
 
     return kopie.telRijen(spelerAanBeurt == 0 ? kopie.speler1Bord : kopie.speler2Bord); // Bereken score.
