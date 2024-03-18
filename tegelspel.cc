@@ -565,7 +565,7 @@ int TegelSpel::bepaalGoedeScore()
         kopie.wisselSpelerAanBeurt();                       // Wissel speler aan  beurt.
     }
 
-    return kopie.telRijen(spelerAanBeurt == 0 ? speler1Bord : speler2Bord); // Bereken score.
+    return kopie.telRijen(spelerAanBeurt == 0 ? kopie.speler1Bord : kopie.speler2Bord); // Bereken score.
 } // bepaalGoedeScore
 
 //*************************************************************************
