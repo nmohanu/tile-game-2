@@ -281,9 +281,17 @@ vector<pair<int, char>> TegelSpel::bepaalVerschillendeZetten()
     for(int i = 0; i < aantalSchalen; i++) // Voor elke schaal check elke mogelijke kleur.
     {
         if(schalen[i].first > 0)
-            verwerkMogelijkeZet(*maakZet(i, 'g'), zetten);
+        {
+            Zet* z = maakZet(i, 'g');
+            verwerkMogelijkeZet(*z, zetten);
+            delete z;
+        }
         if(schalen[i].second > 0)
-        verwerkMogelijkeZet(*maakZet(i, 'b'), zetten);
+        {
+            Zet* z = maakZet(i, 'b');
+            verwerkMogelijkeZet(*z, zetten);
+            delete z;
+        }
     }
     return zetten;
 } // bepaalVerschillendeZetten
@@ -341,8 +349,8 @@ bool TegelSpel::doeZet(int schaal, char kleur)
     }
     else
     {
-        return false;
         delete zet;
+        return false;
     }
     wisselSpelerAanBeurt();
     return true;
@@ -415,6 +423,7 @@ bool TegelSpel::unDoeZet()
 
 } // unDoeZet
 
+
 //*************************************************************************
 // Wissel tussen speler 0 en 1.
 void TegelSpel::wisselSpelerAanBeurt() 
@@ -433,29 +442,30 @@ int TegelSpel::besteScoreStap(pair<int, char> &besteZet, long long &aantalStande
     }
     else
     {
-        vector<pair<pair<int, char>, int>> scores;
+        auto zetten = bepaalVerschillendeZetten();
 
-        for (pair<int, char>& zet : bepaalVerschillendeZetten())
+        pair<int, char> best_zet;
+        int best_score = -2'147'483'648;
+
+        for (pair<int, char>& zet : zetten)
         {
             doeZet(zet.first, zet.second);
 
-            scores.push_back({ zet, -besteScoreStap(besteZet, aantalStanden) });
+            int score = -besteScoreStap(besteZet, aantalStanden);
+
+            if (score > best_score)
+            {
+                best_score = score;
+                best_zet = zet;
+            }
 
             unDoeZet();
         }
 
         // Bepaal best scorende zet.
-        size_t beste_score_index = 0;
+        besteZet = best_zet;
 
-        for (size_t i = 0; i < scores.size(); i++)
-        {
-            if (scores[i].second > scores[beste_score_index].second)
-                beste_score_index = i;
-        }
-
-        besteZet = scores[beste_score_index].first;
-
-        return scores[beste_score_index].second;
+        return best_score;
     }
 }
 
