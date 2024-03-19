@@ -387,7 +387,7 @@ int TegelSpel::bepaalBesteRij(Zet& zet)
 bool TegelSpel::unDoeZet()
 {
     Zet* verwijderZet = laatsteZet;
-    if(this->laatsteZet == nullptr)
+    if(verwijderZet == nullptr)
         return false;
     
     // Undo zet op bord.
@@ -406,6 +406,8 @@ bool TegelSpel::unDoeZet()
 
     // Herstel de pot.
     pot = laatsteZet->tegelsUitPotGehaald + pot;
+
+
     laatsteZet = verwijderZet->vorige;
     delete verwijderZet;
     wisselSpelerAanBeurt();
@@ -534,9 +536,9 @@ pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
         for(int i = 0; i < nrSimulaties; i++) // Speel n keer willekeurig het spel.
         {
             TegelSpel kopie = *this;
+            kopie.laatsteZet = nullptr;
             kopie.doeZet(zet.first, zet.second);
             score += kopie.speelRandom(spelerAanBeurt);
-            
         }
 
         score /= nrSimulaties;
@@ -556,6 +558,8 @@ pair<int, char> TegelSpel::bepaalGoedeZet(int nrSimulaties)
 int TegelSpel::bepaalGoedeScore()
 {
     TegelSpel kopie = *this; // Maak kopie van huidige situatie.
+    kopie.laatsteZet = nullptr;
+
     while(!kopie.eindstand())
     {
         if (kopie.spelerAanBeurt == spelerAanBeurt)
