@@ -1,6 +1,6 @@
 CC = g++
 
-CompileParms = -c -Wall -std=c++11 -O2
+CompileParms = -c -Wall -std=c++20 -O2
 
 OBJS = standaard.o tegelspel.o main.o
 
@@ -18,4 +18,3 @@ tegelspel.o: tegelspel.cc standaard.h constantes.h tegelspel.h
 
 main.o: main.cc constantes.h tegelspel.h
 	$(CC) $(CompileParms)  main.cc
-
