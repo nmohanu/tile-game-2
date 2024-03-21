@@ -334,7 +334,7 @@ bool TegelSpel::doeZet(int schaal, char kleur)
 
     if((kleur == 'g'? schalen[schaal].first : schalen[schaal].second) < 1) // Kijk of tegel op schaal ligt.
         return false;
-        
+
     // Maak zet instantie.
     Zet* zet = maakZet(schaal, kleur);
 
@@ -600,6 +600,7 @@ void TegelSpel::doeExperiment()
 {
     // Bereik eindstand.
     long long zetten = 0;
+    clock_t t1, t2;
 
     while (!eindstand())
     {
@@ -617,8 +618,12 @@ void TegelSpel::doeExperiment()
         pair<int, char> zet;
         long long aantal;
 
+        t1 = clock();
         besteScore(zet, aantal);
-
+        t2 = clock();
+        
         cout << aantal << '\n';
+        cout << "Dit kostte " << (t2 - t1) << " clock ticks, ofwel "
+         << (((double)(t2 - t1)) / CLOCKS_PER_SEC) << " seconden." << endl;
     }
 } // doeExperiment
